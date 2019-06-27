@@ -3,11 +3,6 @@ import csv
 from numpy import *
 pg.init()
 win = pg.display.set_mode((800,800))
-settings_csv = open('settings.csv','r')
-settings=csv.DictReader(settings_csv)
-terrainSize=40
-for line in settings:
-    exec(line[name] + "="+line[value])
 
 color_map = {}
 color_map[0] = (255,0,0);color_map[1]=(240,106,16);color_map[2]=(247,255,0);color_map[3]=(68,255,0);color_map[4]=(0,222,255);color_map[5]=(0,0,255)
@@ -18,6 +13,7 @@ def read_terrain(filename):
             lines=[]
             for line in file:
                 lines.append(line)
+            terrainSize=len(lines)
             terrain = empty((terrainSize,terrainSize),dtype=int)
             for i in range(0,terrainSize):
                 for j in range(0,terrainSize):
@@ -28,13 +24,14 @@ def read_terrain(filename):
             return None,None
 
     else:
+        terrainSize=int(input("Terrain Size?"))
         terrain = zeros((terrainSize,terrainSize),dtype=int)
         return terrain,terrainSize
 def display_terrain():
     pg.draw.rect(win,(0,0,0),pg.Rect(0,0,800,800))
     for i in range(0,terrainSize):
         for j in range(0,terrainSize):
-            pg.draw.rect(win,color_map[terrain[j][i]],pg.Rect(i*20,j*20,20,20))
+            pg.draw.rect(win,color_map[terrain[j][i]],pg.Rect(i*(800/terrainSize),j*(800/terrainSize),800/terrainSize,800/terrainSize))
 
 def read_update():
     x_mouse,y_mouse = pg.mouse.get_pos()
@@ -48,18 +45,17 @@ def read_update():
         elif event.key==pg.K_r:
             return 3,x_mouse,y_mouse
         elif event.key==pg.K_t:
-            print("BF4")
             return 4,x_mouse,y_mouse
-        elif event.key==pg.K_5:
+        elif event.key==pg.K_y:
             return 5,x_mouse,y_mouse
     return None,None,None
 def update_terrain():
     data,x,y=read_update()
     if data==None:
         return -1
-    new_x = x//20
+    new_x = int(x//(800/terrainSize))
     print(new_x)
-    new_y = y//20
+    new_y = int(y//(800/terrainSize))
     print(new_y)
     terrain[new_y][new_x]=data
 
