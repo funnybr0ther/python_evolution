@@ -1,15 +1,17 @@
 import pygame as pg
 import csv
 from numpy import *
+import os
+import sys
 pg.init()
 win = pg.display.set_mode((800,800))
 
 color_map = {}
-color_map[0] = (255,0,0);color_map[1]=(240,106,16);color_map[2]=(247,255,0);color_map[3]=(68,255,0);color_map[4]=(0,222,255);color_map[5]=(0,0,255)
+color_map[0] = (255,0,0);color_map[1]=(240,106,16);color_map[2]=(247,255,0);color_map[3]=(68,255,0);color_map[4]=(0,222,255);color_map[5]=(0,0,255);color_map[6]=(255,255,255)
 def read_terrain(filename):
     if filename != "new":
         try:
-            file = open(filename,"r")
+            file = open(os.path.join(sys.path[0], filename), "r")
             lines=[]
             for line in file:
                 lines.append(line)
@@ -20,13 +22,16 @@ def read_terrain(filename):
                     terrain[i][j]=int(lines[i][j])
             return terrain,terrainSize
         except:
-            print("File does not exist")
-            return None,None
+            print("File does not exist,creating new")
+            terrainSize=int(input("Terrain Size?"))
+            terrain = zeros((terrainSize,terrainSize),dtype=int)
+            return terrain,terrainSize            
 
     else:
         terrainSize=int(input("Terrain Size?"))
         terrain = zeros((terrainSize,terrainSize),dtype=int)
         return terrain,terrainSize
+        
 def display_terrain():
     pg.draw.rect(win,(0,0,0),pg.Rect(0,0,800,800))
     for i in range(0,terrainSize):
@@ -48,6 +53,8 @@ def read_update():
             return 4,x_mouse,y_mouse
         elif event.key==pg.K_y:
             return 5,x_mouse,y_mouse
+        elif event.key==pg.K_u:
+            return 6,x_mouse,y_mouse
     return None,None,None
 def update_terrain():
     data,x,y=read_update()
@@ -76,8 +83,9 @@ def check_save():
                     line+=str(int(terrain[i][j]))
                 file.write(line+'\n')
 
-run = True
 terrain,terrainSize=read_terrain(input("Filename or <new>"))
+run = True
+
 display_terrain()
 while run:
     for event in pg.event.get():

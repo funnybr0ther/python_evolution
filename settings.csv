@@ -1,1 +1,6 @@
 name,value
+defaultFoodValue,20
+defaultFoodRadius,10
+spawnBorder,50
+spawnFrequency,8
+defaultEPS,1

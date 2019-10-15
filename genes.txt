@@ -1,0 +1,9 @@
+jumpFrequency:Frequency at which the zombie jumps
+gravity:Degree at which the zombie is affected by gravity
+jumpForce:Force of the jump
+jumpAngle:Angle at which the zombie jumps
+boredomTime:Time it takes for the zombie to get bored and enter in "boredom" state
+boredomDuration:Duration of boredom state
+spottingRange:Radius of the zombie's sight (circle), affects both food and mating sight
+matingTreshold:Energy treshold above which the zombie stops looking for food and starts looking for another zombie in the same state
+energyPercentage:Percentage of the zombie's energy that will me transfered to the child(promille)
